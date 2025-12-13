@@ -13,7 +13,8 @@ import {
     Cpu,
     Globe,
     Briefcase,
-    Layout
+    Layout,
+    Menu
 } from 'lucide-react';
 
 const SEARCH_ITEMS = [
@@ -299,7 +300,7 @@ export default function Navbar({ fullWidth = false, isAdmin = false }: NavbarPro
                         onClick={() => setIsMobileMenuOpen(true)}
                         aria-label="Open menu"
                     >
-                        <span className={styles.menuLabel}>Menu</span>
+                        <Menu size={24} />
                     </button>
                 </div>
 
@@ -319,6 +320,18 @@ export default function Navbar({ fullWidth = false, isAdmin = false }: NavbarPro
                     </div>
 
                     <div className={styles.mobileContent}>
+                        {!isAdmin && (
+                            <div style={{ marginBottom: '1.5rem' }}>
+                                <p className={styles.mobileLabel}>Account</p>
+                                <Link href="/login" className={styles.mobileUserBtn} onClick={() => setIsMobileMenuOpen(false)}>
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                        <circle cx="12" cy="7" r="4"></circle>
+                                    </svg>
+                                    <span>Sign In</span>
+                                </Link>
+                            </div>
+                        )}
                         <nav className={styles.mobileNav}>
                             <Link href="/" className={styles.mobileLink} onClick={() => setIsMobileMenuOpen(false)}>Explore</Link>
                             {!isAdmin && <Link href="/about" className={styles.mobileLink} onClick={() => setIsMobileMenuOpen(false)}>About</Link>}
@@ -326,6 +339,8 @@ export default function Navbar({ fullWidth = false, isAdmin = false }: NavbarPro
                         </nav>
 
                         <div className={styles.mobileActions}>
+
+
                             <div className={styles.mobileThemeGroup}>
                                 <p className={styles.mobileLabel}>Appearance</p>
                                 <div className={styles.themeToggleLarge}>

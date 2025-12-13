@@ -25,6 +25,10 @@
   justify-content: center;
 }
 
+.mobileBrandName {
+  display: none;
+}
+
 .heroContent {
   text-align: center;
   max-width: 800px;
@@ -746,7 +750,7 @@
 @media (max-width: 768px) {
   .hero {
     min-height: auto;
-    padding: 6rem 0 2rem;
+    padding: 3rem 0 2rem;
     overflow: visible;
     /* Allow cards to show if they overflow */
   }
@@ -756,59 +760,24 @@
   }
 
   /* Restore Floating Cards as Carousel on Mobile */
+  /* Hide Floating Cards on Mobile */
   .floatingCards {
-    position: relative;
-    height: auto;
-    display: flex;
-    flex-direction: row;
-    gap: 1rem;
-    overflow-x: auto;
-    padding: 1rem 1.5rem 2rem 1.5rem;
-    /* Better padding */
-    margin-top: 2rem;
-    width: auto;
-    /* Reset width */
-    margin-left: -1.5rem;
-    /* Negative margin to pull to edge */
-    margin-right: -1.5rem;
-    /* Negative margin to pull to edge */
-    left: auto;
-    transform: none;
-    pointer-events: auto;
-    -webkit-overflow-scrolling: touch;
-    scroll-snap-type: x mandatory;
-    z-index: 20;
-    /* Ensure on top */
-  }
-
-  /* Ensure container doesn't clip */
-  .heroContainer {
-    overflow: visible;
-  }
-
-  /* Hide scrollbar */
-  .floatingCards::-webkit-scrollbar {
     display: none;
   }
 
-  .floatCard {
+  .mobileBrandName {
     display: block;
-    position: relative;
-    min-width: 260px;
-    /* Slightly wider */
-    opacity: 1 !important;
-    transform: none !important;
-    /* Reset rotation */
-    top: auto !important;
-    left: auto !important;
-    right: auto !important;
-    bottom: auto !important;
-    scroll-snap-align: center;
-    margin: 0;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-    /* Stronger shadow */
-    background: var(--bg-card);
-    /* Ensure background is set */
+    font-family: var(--font-serif);
+    font-weight: 900;
+    font-size: 2rem;
+    /* Larger for hero */
+    letter-spacing: -0.02em;
+    color: var(--text-primary);
+    margin-bottom: 1rem;
+  }
+
+  .dot {
+    color: var(--accent);
   }
 
   .heroContent {

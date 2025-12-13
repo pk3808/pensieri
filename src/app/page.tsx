@@ -47,6 +47,11 @@ export default function Home() {
 
           {/* Centered Content */}
           <div className={styles.heroContent}>
+            {/* Mobile Brand Name */}
+            <span className={styles.mobileBrandName}>
+              Pensieri<span className={styles.dot}>.</span>
+            </span>
+
             {/* Rating Stars (Mock) */}
             <div className={styles.ratingBadge}>
               <span className={styles.stars}>★★★★★</span>

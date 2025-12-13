@@ -121,4 +121,9 @@
     .title {
         font-size: 1.5rem;
     }
+
+    .imageWrapper,
+    .cardImage {
+        border-radius: 12px;
+    }
 }

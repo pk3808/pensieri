@@ -123,10 +123,11 @@
     display: none;
     align-items: center;
     justify-content: center;
-    padding: 0.5rem 1rem;
+    width: 40px;
+    height: 40px;
+    padding: 0;
     border: 1px solid var(--border);
-    border-radius: 50px;
-    /* Pill shape */
+    border-radius: 50%;
     background: transparent;
     color: var(--text-primary);
     font-weight: 600;
@@ -609,4 +610,24 @@
 
 [data-theme='dark'] .filterPill.active {
     color: #000;
+}
+
+.mobileUserBtn {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    background: var(--bg-secondary);
+    border-radius: 12px;
+    color: var(--text-primary);
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.2s;
+    font-size: 1.1rem;
+}
+
+.mobileUserBtn:hover {
+    background: var(--bg-card);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
