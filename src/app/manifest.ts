@@ -3,7 +3,7 @@ import { MetadataRoute } from 'next'
 export default function manifest(): MetadataRoute.Manifest {
     return {
         name: 'Pensieri.',
-        short_name: 'Pensieri.',
+        short_name: 'Pensieri',
         description: 'A sanctuary for thoughtful writing and deep reading.',
         start_url: '/',
         display: 'standalone',
