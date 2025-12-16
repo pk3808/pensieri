@@ -49,14 +49,8 @@ export default function Home() {
           <div className={styles.heroContent}>
             {/* Mobile Brand Name */}
             <span className={styles.mobileBrandName}>
-              Pensieri<span className={styles.dot}>.</span>
+              Pensieri
             </span>
-
-            {/* Rating Stars (Mock) */}
-            <div className={styles.ratingBadge}>
-              <span className={styles.stars}>★★★★★</span>
-              <span className={styles.ratingText}>Loved by 10,000+ readers</span>
-            </div>
 
             <h1 className={styles.heroTitle}>
               Share your <span className={styles.heroHighlight}>creative journey.</span>
@@ -67,6 +61,12 @@ export default function Home() {
             </p>
 
             <button className={styles.ctaButton}>Start Writing</button>
+
+            {/* Rating Stars (Mock) */}
+            <div className={styles.ratingBadge}>
+              <span className={styles.stars}>★★★★★</span>
+              <span className={styles.ratingText}>Loved by 10,000+ readers</span>
+            </div>
           </div>
 
           {/* Floating Cards */}

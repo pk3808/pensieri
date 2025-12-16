@@ -29,7 +29,7 @@ export default function Login() {
                 <div className={styles.brandSection}>
                     <Link href="/" className={styles.logo}>
                         <img src="/inkwise.png" alt="Pensieri Logo" className={styles.logoImage} />
-                        Pensieri<span className={styles.dot}>.</span>
+                        Pensieri
                     </Link>
                     <h1 className={styles.brandTitle}>Welcome Back.</h1>
                     <p className={styles.brandSubtitle}>

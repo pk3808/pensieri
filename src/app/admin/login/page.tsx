@@ -45,7 +45,7 @@ export default function AdminLogin() {
                 <div className={styles.header}>
                     <Link href="/" className={styles.logo}>
                         <img src="/inkwise.png" alt="Pensieri Logo" className={styles.logoImage} />
-                        Pensieri<span className={styles.dot}>.</span>
+                        Pensieri
                     </Link>
                     <h1 className={styles.title}>Admin Login</h1>
                     <p className={styles.subtitle}>Enter your credentials to access the dashboard.</p>

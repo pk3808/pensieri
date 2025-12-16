@@ -100,7 +100,7 @@ export default function Navbar({ fullWidth = false, isAdmin = false }: NavbarPro
                 <div className={styles.topBar}>
                     <Link href="/" className={styles.logo}>
                         <img src="/inkwise.png" alt="Pensieri Logo" className={styles.logoImage} />
-                        Pensieri<span className={styles.dot}>.</span>
+                        Pensieri
                     </Link>
 
                     {/* Desktop Nav Items */}
@@ -308,7 +308,7 @@ export default function Navbar({ fullWidth = false, isAdmin = false }: NavbarPro
                 <div className={`${styles.mobileOverlay} ${isMobileMenuOpen ? styles.open : ''}`}>
                     <div className={styles.mobileHeader}>
                         <Link href="/" className={styles.logo} onClick={() => setIsMobileMenuOpen(false)}>
-                            Pensieri<span className={styles.dot}>.</span>
+                            Pensieri
                         </Link>
                         <button
                             className={styles.closeBtn}

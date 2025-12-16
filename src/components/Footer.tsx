@@ -14,8 +14,8 @@ export default function Footer() {
                     {/* Brand Column */}
                     <div className={styles.brandCol}>
                         <div className={styles.logo}>
-                            <img src="/inkwise.png" alt="Pensieri Logo" style={{ width: '32px', height: 'auto', marginRight: '8px' }} />
-                            <span className={styles.logoText}>Pensieri.</span>
+                            <img src="/inkwise.png" alt="Pensieri Logo" className={styles.logoImage} style={{ width: '32px', height: 'auto', marginRight: '8px' }} />
+                            <span className={styles.logoText}>Pensieri</span>
                         </div>
                         <p className={styles.tagline}>
                             A sanctuary for thoughtful writing and deep reading. Built for those who value clarity over clutter.

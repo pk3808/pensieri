@@ -44,6 +44,14 @@
     line-height: 1;
 }
 
+.logoImage {
+    transition: filter 0.3s ease;
+}
+
+[data-theme='dark'] .logoImage {
+    filter: invert(1) brightness(1.5);
+}
+
 .tagline {
     margin-bottom: 1.5rem;
     line-height: 1.6;
