@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 
 const WORKER_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-001:generateContent";
-const API_KEY = "AIzaSyBsRrKR8O_JTveL0XGpbenQxsHL7E33szI"; // Ideally in process.env
+const API_KEY = "AIzaSyBsRrKR8O_JTveL0XGpbenQgi"; // Ideally in process.env
 
 export async function POST(req: Request) {
     try {
