@@ -8,6 +8,7 @@ import { ArrowLeft, Chrome } from 'lucide-react';
 export default function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [showPassword, setShowPassword] = useState(false);
     const [loading, setLoading] = useState(false);
 
     const handleLogin = async (e: React.FormEvent) => {
@@ -67,15 +68,37 @@ export default function Login() {
 
                         <div className={styles.inputGroup}>
                             <label htmlFor="password" className={styles.label}>Password</label>
-                            <input
-                                type="password"
-                                id="password"
-                                value={password}
-                                onChange={(e) => setPassword(e.target.value)}
-                                className={styles.input}
-                                placeholder="••••••••"
-                                required
-                            />
+                            <div className={styles.passwordWrapper}>
+                                <input
+                                    type={showPassword ? "text" : "password"}
+                                    id="password"
+                                    value={password}
+                                    onChange={(e) => setPassword(e.target.value)}
+                                    className={styles.input}
+                                    placeholder="••••••••"
+                                    required
+                                />
+                                <button
+                                    type="button"
+                                    className={styles.toggleBtn}
+                                    onClick={() => setShowPassword(!showPassword)}
+                                    aria-label={showPassword ? "Hide password" : "Show password"}
+                                >
+                                    {showPassword ? (
+                                        <img
+                                            src="/book.png"
+                                            alt="Hide"
+                                            className={`${styles.iconAnimate} ${styles.iconImage}`}
+                                        />
+                                    ) : (
+                                        <img
+                                            src="/lock.png"
+                                            alt="Show"
+                                            className={`${styles.iconAnimate} ${styles.iconImage}`}
+                                        />
+                                    )}
+                                </button>
+                            </div>
                         </div>
 
                         <button type="submit" className={`btn btn-primary ${styles.submitBtn}`} disabled={loading}>

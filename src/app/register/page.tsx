@@ -10,6 +10,8 @@ export default function Register() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
+    const [showPassword, setShowPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const [loading, setLoading] = useState(false);
 
     const handleRegister = async (e: React.FormEvent) => {
@@ -87,27 +89,71 @@ export default function Register() {
                         <div className={styles.row}>
                             <div className={styles.inputGroup}>
                                 <label htmlFor="password" className={styles.label}>Password</label>
-                                <input
-                                    type="password"
-                                    id="password"
-                                    value={password}
-                                    onChange={(e) => setPassword(e.target.value)}
-                                    className={styles.input}
-                                    placeholder="•••••"
-                                    required
-                                />
+                                <div className={styles.passwordWrapper}>
+                                    <input
+                                        type={showPassword ? "text" : "password"}
+                                        id="password"
+                                        value={password}
+                                        onChange={(e) => setPassword(e.target.value)}
+                                        className={styles.input}
+                                        placeholder="•••••"
+                                        required
+                                    />
+                                    <button
+                                        type="button"
+                                        className={styles.toggleBtn}
+                                        onClick={() => setShowPassword(!showPassword)}
+                                        aria-label={showPassword ? "Hide password" : "Show password"}
+                                    >
+                                        {showPassword ? (
+                                            <img
+                                                src="/book.png"
+                                                alt="Hide"
+                                                className={`${styles.iconAnimate} ${styles.iconImage}`}
+                                            />
+                                        ) : (
+                                            <img
+                                                src="/lock.png"
+                                                alt="Show"
+                                                className={`${styles.iconAnimate} ${styles.iconImage}`}
+                                            />
+                                        )}
+                                    </button>
+                                </div>
                             </div>
                             <div className={styles.inputGroup}>
                                 <label htmlFor="confirmPassword" className={styles.label}>Confirm</label>
-                                <input
-                                    type="password"
-                                    id="confirmPassword"
-                                    value={confirmPassword}
-                                    onChange={(e) => setConfirmPassword(e.target.value)}
-                                    className={styles.input}
-                                    placeholder="•••••"
-                                    required
-                                />
+                                <div className={styles.passwordWrapper}>
+                                    <input
+                                        type={showConfirmPassword ? "text" : "password"}
+                                        id="confirmPassword"
+                                        value={confirmPassword}
+                                        onChange={(e) => setConfirmPassword(e.target.value)}
+                                        className={styles.input}
+                                        placeholder="•••••"
+                                        required
+                                    />
+                                    <button
+                                        type="button"
+                                        className={styles.toggleBtn}
+                                        onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                                        aria-label={showConfirmPassword ? "Hide password" : "Show password"}
+                                    >
+                                        {showConfirmPassword ? (
+                                            <img
+                                                src="/book.png"
+                                                alt="Hide"
+                                                className={`${styles.iconAnimate} ${styles.iconImage}`}
+                                            />
+                                        ) : (
+                                            <img
+                                                src="/lock.png"
+                                                alt="Show"
+                                                className={`${styles.iconAnimate} ${styles.iconImage}`}
+                                            />
+                                        )}
+                                    </button>
+                                </div>
                             </div>
                         </div>
 
