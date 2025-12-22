@@ -98,3 +98,36 @@ export const CATEGORIES = [
     { name: "Business", count: 92, slug: "business" },
     { name: "Self", count: 45, slug: "self" },
 ];
+
+export const PREMIUM_BLOGS = [
+    {
+        slug: "master-class-writing",
+        title: "Masterclass: Writing with Impact",
+        excerpt: "Unlock the secrets of persuasive writing from industry leaders. A 10-part series on crafting compelling narratives.",
+        category: "Education",
+        date: "Dec 20, 2025",
+        readTime: "15 min",
+        author: "Julian S.",
+        image: "https://picsum.photos/seed/premium1/800/600"
+    },
+    {
+        slug: "future-tech-trends",
+        title: "The 2026 Tech Forecast",
+        excerpt: "Exclusive insights into the technologies that will define the next decade. Prepared by our expert analysts.",
+        category: "Technology",
+        date: "Dec 18, 2025",
+        readTime: "12 min",
+        author: "Tech Insider",
+        image: "https://picsum.photos/seed/premium2/800/600"
+    },
+    {
+        slug: "creative-leadership",
+        title: "Creative Leadership in Crisis",
+        excerpt: "How to lead your team through uncertain times with creativity and resilience.",
+        category: "Business",
+        date: "Dec 15, 2025",
+        readTime: "10 min",
+        author: "Sarah J.",
+        image: "https://picsum.photos/seed/premium3/800/600"
+    }
+];

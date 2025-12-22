@@ -7,6 +7,7 @@ import styles from "./page.module.css";
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { MOCK_BLOGS, CATEGORIES } from "@/data/mockData";
+import PremiumSection from "@/components/PremiumSection";
 
 const FLOATING_REVIEWS = [
   { id: 1, name: "Alex R.", role: "Writer", text: "Pensieri helped me find my voice.", avatar: "A", pos: styles.pos1 },
@@ -148,6 +149,11 @@ export default function Home() {
         </div>
       </section>
 
+
+
+      {/* Premium Section */}
+      <PremiumSection />
+
       {/* Blog Grid Section */}
       <section className={styles.content}>
         <div className="container">
@@ -218,6 +224,6 @@ export default function Home() {
       </section>
 
       <Footer />
-    </main>
+    </main >
   );
 }
