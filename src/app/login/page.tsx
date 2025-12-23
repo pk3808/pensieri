@@ -5,12 +5,14 @@ import Link from 'next/link';
 import styles from './page.module.css';
 import { ArrowLeft } from 'lucide-react';
 import GoogleIcon from '../../components/GoogleIcon';
+import ForgotPasswordModal from './ForgotPasswordModal';
 
 export default function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
     const [loading, setLoading] = useState(false);
+    const [showForgotPassword, setShowForgotPassword] = useState(false);
 
     const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -101,11 +103,17 @@ export default function Login() {
                                 </button>
                             </div>
                         </div>
+                        <div className={styles.forgotLink}>
+                            <button type="button" className={styles.forgotBtn} onClick={() => setShowForgotPassword(true)}>
+                                Forgot password?
+                            </button>
+                        </div>
 
                         <button type="submit" className={`btn btn-primary ${styles.submitBtn}`} disabled={loading}>
                             {loading ? 'Signing In...' : 'Sign In'}
                         </button>
                     </form>
+                    <ForgotPasswordModal isOpen={showForgotPassword} onClose={() => setShowForgotPassword(false)} />
 
                     <div className={styles.footer}>
                         Don&apos;t have an account?
