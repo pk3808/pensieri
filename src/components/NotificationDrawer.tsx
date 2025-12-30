@@ -1,7 +1,7 @@
 "use client";
 
 import React from 'react';
-import { X, Heart, UserPlus, MessageSquare, Bell, CheckCircle2, Trash2 } from 'lucide-react';
+import { X, Heart, UserPlus, MessageSquare, Bell, CheckCircle2, Trash2, Droplet } from 'lucide-react';
 import styles from './NotificationDrawer.module.css';
 
 export interface Notification {
@@ -11,6 +11,7 @@ export interface Notification {
     message: string;
     time: string;
     isRead: boolean;
+    link?: string;
     userAvatar?: string;
 }
 
@@ -20,6 +21,7 @@ interface NotificationDrawerProps {
     notifications: Notification[];
     onMarkAllRead: () => void;
     onClearAll: () => void;
+    onNotificationClick: (notification: Notification) => void;
 }
 
 export default function NotificationDrawer({
@@ -27,13 +29,14 @@ export default function NotificationDrawer({
     onClose,
     notifications,
     onMarkAllRead,
-    onClearAll
+    onClearAll,
+    onNotificationClick
 }: NotificationDrawerProps) {
     if (!isOpen) return null;
 
     const getIcon = (type: Notification['type']) => {
         switch (type) {
-            case 'like': return <Heart size={16} fill="#FF2D55" stroke="#FF2D55" />;
+            case 'like': return <Droplet size={16} fill="var(--primary)" stroke="var(--primary)" />;
             case 'follow': return <UserPlus size={16} color="#34C759" />;
             case 'comment': return <MessageSquare size={16} color="#5856D6" />;
             default: return <Bell size={16} color="#FF9500" />;
@@ -67,14 +70,27 @@ export default function NotificationDrawer({
                 <div className={styles.list}>
                     {notifications.length > 0 ? (
                         notifications.map(notification => (
-                            <div key={notification.id} className={`${styles.item} ${!notification.isRead ? styles.unread : ''}`}>
+                            <div
+                                key={notification.id}
+                                className={`${styles.item} ${!notification.isRead ? styles.unread : ''}`}
+                                onClick={() => onNotificationClick(notification)}
+                            >
                                 <div className={styles.itemHeader}>
-                                    <div className={styles.typeIcon}>{getIcon(notification.type)}</div>
-                                    <span className={styles.time}>{notification.time}</span>
+                                    <div className={styles.avatarSection}>
+                                        {notification.userAvatar ? (
+                                            <img src={notification.userAvatar} alt="" className={styles.avatar} />
+                                        ) : (
+                                            <div className={styles.typeIcon}>{getIcon(notification.type)}</div>
+                                        )}
+                                        <div className={styles.miniTypeIcon}>{getIcon(notification.type)}</div>
+                                    </div>
+                                    <div className={styles.itemMeta}>
+                                        <p className={styles.itemTitle}>{notification.title}</p>
+                                        <span className={styles.time}>{notification.time}</span>
+                                    </div>
                                     {!notification.isRead && <div className={styles.unreadDot} />}
                                 </div>
                                 <div className={styles.content}>
-                                    <p className={styles.itemTitle}>{notification.title}</p>
                                     <p className={styles.itemMessage}>{notification.message}</p>
                                 </div>
                             </div>

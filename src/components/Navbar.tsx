@@ -61,15 +61,19 @@ export default function Navbar({ fullWidth = false, isAdmin = false }: NavbarPro
             title: 'New Follower',
             message: 'Alex Rivera started following you',
             time: '2m ago',
-            isRead: false
+            isRead: false,
+            link: '/u/arivera',
+            userAvatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=100&h=100&auto=format&fit=crop'
         },
         {
             id: '2',
             type: 'like',
-            title: 'Post Liked',
-            message: 'Sarah Chen liked your post "Future of Writing"',
+            title: 'Post Got Ink',
+            message: 'Sarah Chen gave ink to your post "Future of Writing"',
             time: '15m ago',
-            isRead: false
+            isRead: false,
+            link: '/blog/future-of-writing',
+            userAvatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=100&h=100&auto=format&fit=crop'
         },
         {
             id: '3',
@@ -77,7 +81,9 @@ export default function Navbar({ fullWidth = false, isAdmin = false }: NavbarPro
             title: 'New Comment',
             message: 'Marcus Thorne commented on your story',
             time: '1h ago',
-            isRead: false
+            isRead: false,
+            link: '/blog/minimalism-in-design',
+            userAvatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=100&h=100&auto=format&fit=crop'
         },
         {
             id: '4',
@@ -85,7 +91,8 @@ export default function Navbar({ fullWidth = false, isAdmin = false }: NavbarPro
             title: 'Weekly Report',
             message: 'Your reading stats for this week are ready',
             time: '5h ago',
-            isRead: true
+            isRead: true,
+            link: '/profile'
         }
     ]);
 
@@ -133,6 +140,20 @@ export default function Navbar({ fullWidth = false, isAdmin = false }: NavbarPro
     const handleClearAll = () => {
         setNotifications([]);
         setUnreadCount(0);
+    };
+
+    const handleNotificationClick = (notification: Notification) => {
+        // Mark as read
+        setNotifications(prev => prev.map(n =>
+            n.id === notification.id ? { ...n, isRead: true } : n
+        ));
+        setUnreadCount(prev => Math.max(0, prev - (notification.isRead ? 0 : 1)));
+
+        // Navigate
+        if (notification.link) {
+            router.push(notification.link);
+            setIsNotificationDrawerOpen(false);
+        }
     };
 
 
@@ -569,6 +590,7 @@ export default function Navbar({ fullWidth = false, isAdmin = false }: NavbarPro
                 notifications={notifications}
                 onMarkAllRead={handleMarkAllRead}
                 onClearAll={handleClearAll}
+                onNotificationClick={handleNotificationClick}
             />
         </nav>
     );
