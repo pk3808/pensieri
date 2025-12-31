@@ -74,7 +74,7 @@
 
 /* LEFT SIDE: Brand */
 .brandSection {
-    flex: 0.8;
+    flex: 1;
     background: var(--text-primary);
     color: var(--bg-primary);
     padding: 2.5rem;
@@ -146,6 +146,7 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
+    align-items: center;
     background: var(--bg-card);
 }
 

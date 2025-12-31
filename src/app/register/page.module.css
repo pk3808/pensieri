@@ -62,7 +62,8 @@
     display: flex;
     width: 100%;
     max-width: 800px;
-    min-height: 400px;
+    height: 500px;
+    /* Fixed height to match Login card approx */
     background: var(--bg-card);
     border-radius: 20px;
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.12);
@@ -74,7 +75,7 @@
 
 /* LEFT SIDE: Brand */
 .brandSection {
-    flex: 0.8;
+    flex: 1;
     background: var(--text-primary);
     color: var(--bg-primary);
     padding: 1.5rem;
@@ -151,11 +152,44 @@
 /* RIGHT SIDE: Form */
 .formSection {
     flex: 1;
-    padding: 1.5rem;
     display: flex;
     flex-direction: column;
-    justify-content: center;
     background: var(--bg-card);
+    overflow: hidden;
+    /* Ensure content stays within height */
+    padding: 0;
+    /* Removing padding from parent to handle scrollbar better */
+}
+
+.staticContent {
+    flex-shrink: 0;
+    /* Don't shrink the header part */
+    padding: 1.5rem 1.5rem 0.5rem 1.5rem;
+    background: var(--bg-card);
+    z-index: 10;
+}
+
+.scrollableContent {
+    flex: 1;
+    overflow-y: auto;
+    padding: 0.5rem 1.5rem 1.5rem 1.5rem;
+    width: 100%;
+    /* Custom Scrollbar for webkit */
+    scrollbar-width: thin;
+    scrollbar-color: var(--border) transparent;
+}
+
+.scrollableContent::-webkit-scrollbar {
+    width: 6px;
+}
+
+.scrollableContent::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.scrollableContent::-webkit-scrollbar-thumb {
+    background-color: var(--border);
+    border-radius: 20px;
 }
 
 .formHeader {
@@ -179,7 +213,7 @@
     flex-direction: column;
     gap: 0.6rem;
     width: 100%;
-    max-width: 360px;
+    /* max-width removed here as parent constrains it */
 }
 
 .row {

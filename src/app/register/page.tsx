@@ -9,6 +9,8 @@ import GoogleIcon from '../../components/GoogleIcon';
 export default function Register() {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
+    const [city, setCity] = useState('');
+    const [state, setState] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
@@ -77,53 +79,89 @@ export default function Register() {
 
                 {/* RIGHT SIDE: Form */}
                 <div className={styles.formSection}>
-                    <div className={styles.formHeader}>
-                        <h2 className={styles.formTitle}>
-                            {step === 'details' ? 'Create Account' : 'Verify Email'}
-                        </h2>
-                        <p className={styles.formSubtitle}>
-                            {step === 'details'
-                                ? 'Enter your details to get started.'
-                                : `We've sent a code to ${email}`}
-                        </p>
+                    <div className={styles.staticContent}>
+                        <div className={styles.formHeader}>
+                            <h2 className={styles.formTitle}>
+                                {step === 'details' ? 'Create Account' : 'Verify Email'}
+                            </h2>
+                            <p className={styles.formSubtitle}>
+                                {step === 'details'
+                                    ? 'Enter your details to get started.'
+                                    : `We've sent a code to ${email}`}
+                            </p>
+                        </div>
+
+                        {step === 'details' && (
+                            <>
+                                <button type="button" className={styles.googleBtn}>
+                                    <GoogleIcon />
+                                    Sign up with Google
+                                </button>
+                                <div className={styles.divider}>or with email</div>
+                            </>
+                        )}
                     </div>
 
-                    {step === 'details' ? (
-                        <form onSubmit={handleRegister} className={styles.form}>
-                            <button type="button" className={styles.googleBtn}>
-                                <GoogleIcon />
-                                Sign up with Google
-                            </button>
+                    <div className={styles.scrollableContent}>
+                        {step === 'details' ? (
+                            <form onSubmit={handleRegister} className={styles.form}>
+                                <div className={styles.inputGroup}>
+                                    <label htmlFor="name" className={styles.label}>Full Name</label>
+                                    <input
+                                        type="text"
+                                        id="name"
+                                        value={name}
+                                        onChange={(e) => setName(e.target.value)}
+                                        className={styles.input}
+                                        placeholder="John Doe"
+                                        required
+                                    />
+                                </div>
 
-                            <div className={styles.divider}>or with email</div>
+                                <div className={styles.inputGroup}>
+                                    <label htmlFor="email" className={styles.label}>Email Address</label>
+                                    <input
+                                        type="email"
+                                        id="email"
+                                        value={email}
+                                        onChange={(e) => setEmail(e.target.value)}
+                                        className={styles.input}
+                                        placeholder="name@example.com"
+                                        required
+                                    />
+                                </div>
 
-                            <div className={styles.inputGroup}>
-                                <label htmlFor="name" className={styles.label}>Full Name</label>
-                                <input
-                                    type="text"
-                                    id="name"
-                                    value={name}
-                                    onChange={(e) => setName(e.target.value)}
-                                    className={styles.input}
-                                    placeholder="John Doe"
-                                    required
-                                />
-                            </div>
+                                <div className={styles.row}>
+                                    <div className={styles.inputGroup}>
+                                        <label htmlFor="city" className={styles.label}>City</label>
+                                        <input
+                                            type="text"
+                                            id="city"
+                                            value={city}
+                                            onChange={(e) => setCity(e.target.value)}
+                                            className={styles.input}
+                                            placeholder="New York"
+                                        />
+                                    </div>
+                                    <div className={styles.inputGroup}>
+                                        <label htmlFor="state" className={styles.label}>State</label>
+                                        <select
+                                            id="state"
+                                            value={state}
+                                            onChange={(e) => setState(e.target.value)}
+                                            className={styles.input}
+                                        >
+                                            <option value="">Select...</option>
+                                            <option value="CA">California</option>
+                                            <option value="NY">New York</option>
+                                            <option value="TX">Texas</option>
+                                            <option value="FL">Florida</option>
+                                            <option value="IL">Illinois</option>
+                                            {/* Add more states as needed */}
+                                        </select>
+                                    </div>
+                                </div>
 
-                            <div className={styles.inputGroup}>
-                                <label htmlFor="email" className={styles.label}>Email Address</label>
-                                <input
-                                    type="email"
-                                    id="email"
-                                    value={email}
-                                    onChange={(e) => setEmail(e.target.value)}
-                                    className={styles.input}
-                                    placeholder="name@example.com"
-                                    required
-                                />
-                            </div>
-
-                            <div className={styles.row}>
                                 <div className={styles.inputGroup}>
                                     <label htmlFor="password" className={styles.label}>Password</label>
                                     <div className={styles.passwordWrapper}>
@@ -192,45 +230,45 @@ export default function Register() {
                                         </button>
                                     </div>
                                 </div>
-                            </div>
 
-                            <button type="submit" className={`btn btn-primary ${styles.submitBtn}`} disabled={loading}>
-                                {loading ? 'Sending OTP...' : 'Register'}
-                            </button>
-                        </form>
-                    ) : (
-                        <form onSubmit={handleVerifyOTP} className={styles.form}>
-                            <div className={styles.inputGroup}>
-                                <label htmlFor="otp" className={styles.label}>Enter Verification Code</label>
-                                <input
-                                    type="text"
-                                    id="otp"
-                                    value={otp}
-                                    onChange={(e) => setOtp(e.target.value)}
-                                    className={styles.input}
-                                    placeholder="EXAMPLE: 123456"
-                                    required
-                                />
-                            </div>
+                                <button type="submit" className={`btn btn-primary ${styles.submitBtn}`} disabled={loading}>
+                                    {loading ? 'Sending OTP...' : 'Register'}
+                                </button>
 
-                            <button type="submit" className={`btn btn-primary ${styles.submitBtn}`} disabled={loading}>
-                                {loading ? 'Verifying...' : 'Verify & Create Account'}
-                            </button>
+                                <div className={styles.footer}>
+                                    Already have an account?
+                                    <Link href="/login" className={styles.link}>Sign In</Link>
+                                </div>
+                            </form>
+                        ) : (
+                            <form onSubmit={handleVerifyOTP} className={styles.form}>
+                                <div className={styles.inputGroup}>
+                                    <label htmlFor="otp" className={styles.label}>Enter Verification Code</label>
+                                    <input
+                                        type="text"
+                                        id="otp"
+                                        value={otp}
+                                        onChange={(e) => setOtp(e.target.value)}
+                                        className={styles.input}
+                                        placeholder="EXAMPLE: 123456"
+                                        required
+                                    />
+                                </div>
 
-                            <button
-                                type="button"
-                                className={styles.toggleBtn}
-                                style={{ position: 'static', width: '100%', marginTop: '0.5rem', color: 'var(--text-secondary)' }}
-                                onClick={() => setStep('details')}
-                            >
-                                Back to details
-                            </button>
-                        </form>
-                    )}
+                                <button type="submit" className={`btn btn-primary ${styles.submitBtn}`} disabled={loading}>
+                                    {loading ? 'Verifying...' : 'Verify & Create Account'}
+                                </button>
 
-                    <div className={styles.footer}>
-                        Already have an account?
-                        <Link href="/login" className={styles.link}>Sign In</Link>
+                                <button
+                                    type="button"
+                                    className={styles.toggleBtn}
+                                    style={{ position: 'static', width: '100%', marginTop: '0.5rem', color: 'var(--text-secondary)' }}
+                                    onClick={() => setStep('details')}
+                                >
+                                    Back to details
+                                </button>
+                            </form>
+                        )}
                     </div>
                 </div>
             </div>
