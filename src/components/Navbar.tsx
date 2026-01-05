@@ -14,8 +14,16 @@ import {
     Globe,
     Briefcase,
     Layout,
-    Menu
+    Menu,
+    LogOut,
+    User,
+    UserMinus,
+    Bell
 } from 'lucide-react';
+import UserDropdown from "./UserDropdown";
+import NotificationDrawer, { Notification } from "./NotificationDrawer";
+import ConfirmationModal from "./ConfirmationModal";
+import { useRouter } from 'next/navigation';
 
 const SEARCH_ITEMS = [
     { title: "The Future of Writing", href: "/blog/future-of-writing", icon: <FileText size={20} />, meta: "5 min read", rating: 4.8 },
@@ -36,16 +44,118 @@ interface NavbarProps {
 export default function Navbar({ fullWidth = false, isAdmin = false }: NavbarProps) {
     const { theme, setTheme, readingIntensity, setReadingIntensity } = useTheme();
     const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
+    const router = useRouter();
 
-    // ... (keep search logic the same) ...
-    // Note: I need to accept that I can't skip the search logic lines in the middle if I'm replacing the top part and bottom part?
-    // Actually, avoiding large replacements is better. I will split this into chunks.
+    // Auth State
+    const [isLoggedIn, setIsLoggedIn] = React.useState(false);
+    const [currentUser, setCurrentUser] = React.useState<any>(null);
+    const [isDropdownOpen, setIsDropdownOpen] = React.useState(false);
+    const [showLogoutConfirm, setShowLogoutConfirm] = React.useState(false);
+    const [showDeleteConfirm, setShowDeleteConfirm] = React.useState(false);
+    const [unreadCount, setUnreadCount] = React.useState(3); // Mock unread notifications
+    const [isNotificationDrawerOpen, setIsNotificationDrawerOpen] = React.useState(false);
+    const [notifications, setNotifications] = React.useState<Notification[]>([
+        {
+            id: '1',
+            type: 'follow',
+            title: 'New Follower',
+            message: 'Alex Rivera started following you',
+            time: '2m ago',
+            isRead: false,
+            link: '/u/arivera',
+            userAvatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=100&h=100&auto=format&fit=crop'
+        },
+        {
+            id: '2',
+            type: 'like',
+            title: 'Post Got Ink',
+            message: 'Sarah Chen gave ink to your post "Future of Writing"',
+            time: '15m ago',
+            isRead: false,
+            link: '/blog/future-of-writing',
+            userAvatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=100&h=100&auto=format&fit=crop'
+        },
+        {
+            id: '3',
+            type: 'comment',
+            title: 'New Comment',
+            message: 'Marcus Thorne commented on your story',
+            time: '1h ago',
+            isRead: false,
+            link: '/blog/minimalism-in-design',
+            userAvatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=100&h=100&auto=format&fit=crop'
+        },
+        {
+            id: '4',
+            type: 'system',
+            title: 'Weekly Report',
+            message: 'Your reading stats for this week are ready',
+            time: '5h ago',
+            isRead: true,
+            link: '/profile'
+        }
+    ]);
 
-    // Chunk 1: Interface and Destructuring will be done in separate tool call if I wasn't using ReplaceFileContent.
-    // But I will try to target specific blocks.
+    React.useEffect(() => {
+        const loggedIn = localStorage.getItem('isLoggedIn') === 'true';
+        const user = localStorage.getItem('currentUser');
+        if (loggedIn && user) {
+            setIsLoggedIn(true);
+            setCurrentUser(JSON.parse(user));
+        }
+    }, []);
 
-    // Wait, the Instruction says "Add isAdmin prop...".
-    // I can replacing the Interface and Component definition first.
+    const handleLogoutClick = () => {
+        setIsDropdownOpen(false);
+        setShowLogoutConfirm(true);
+    };
+
+    const handleDeleteClick = () => {
+        setIsDropdownOpen(false);
+        setShowDeleteConfirm(true);
+    };
+
+    const confirmLogout = () => {
+        localStorage.removeItem('isLoggedIn');
+        localStorage.removeItem('currentUser');
+        setIsLoggedIn(false);
+        setCurrentUser(null);
+        router.push('/');
+    };
+
+    const confirmDelete = () => {
+        // Mock delete: clear local storage and redirect
+        localStorage.removeItem('isLoggedIn');
+        localStorage.removeItem('currentUser');
+        setIsLoggedIn(false);
+        setCurrentUser(null);
+        router.push('/login');
+    };
+
+    const handleMarkAllRead = () => {
+        setNotifications(prev => prev.map(n => ({ ...n, isRead: true })));
+        setUnreadCount(0);
+    };
+
+    const handleClearAll = () => {
+        setNotifications([]);
+        setUnreadCount(0);
+    };
+
+    const handleNotificationClick = (notification: Notification) => {
+        // Mark as read
+        setNotifications(prev => prev.map(n =>
+            n.id === notification.id ? { ...n, isRead: true } : n
+        ));
+        setUnreadCount(prev => Math.max(0, prev - (notification.isRead ? 0 : 1)));
+
+        // Navigate
+        if (notification.link) {
+            router.push(notification.link);
+            setIsNotificationDrawerOpen(false);
+        }
+    };
+
 
 
     // Search State
@@ -271,14 +381,18 @@ export default function Navbar({ fullWidth = false, isAdmin = false }: NavbarPro
                                     </button>
                                 </div>
                             </div>
-                            {!isAdmin && (
-                                <Link href="/login" className={styles.loginBtn} title="Sign In">
-                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                                        <circle cx="12" cy="7" r="4"></circle>
-                                    </svg>
-                                </Link>
+
+                            {isLoggedIn && (
+                                <button
+                                    className={styles.notificationBtn}
+                                    title="Notifications"
+                                    onClick={() => setIsNotificationDrawerOpen(true)}
+                                >
+                                    <Bell size={20} />
+                                    {unreadCount > 0 && <span className={styles.notificationBadge}>{unreadCount}</span>}
+                                </button>
                             )}
+
                             {!isAdmin && (
                                 <button className="btn btn-primary" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -290,6 +404,37 @@ export default function Navbar({ fullWidth = false, isAdmin = false }: NavbarPro
                                     </svg>
                                     Buy Me Coffee
                                 </button>
+                            )}
+                            {!isAdmin && (
+                                isLoggedIn ? (
+                                    <div style={{ position: 'relative' }}>
+                                        <button
+                                            className={styles.loginBtn}
+                                            onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                                            style={{ padding: 0, overflow: 'hidden' }}
+                                        >
+                                            <img
+                                                src={currentUser?.avatar || "/default-avatar.png"}
+                                                alt={currentUser?.name}
+                                                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                                            />
+                                        </button>
+                                        <UserDropdown
+                                            isOpen={isDropdownOpen}
+                                            onClose={() => setIsDropdownOpen(false)}
+                                            user={currentUser}
+                                            onLogout={handleLogoutClick}
+                                            onDeleteProfile={handleDeleteClick}
+                                        />
+                                    </div>
+                                ) : (
+                                    <Link href="/login" className={styles.loginBtn} title="Sign In">
+                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                            <circle cx="12" cy="7" r="4"></circle>
+                                        </svg>
+                                    </Link>
+                                )
                             )}
                         </div>
                     </div>
@@ -323,13 +468,50 @@ export default function Navbar({ fullWidth = false, isAdmin = false }: NavbarPro
                         {!isAdmin && (
                             <div style={{ marginBottom: '1.5rem' }}>
                                 <p className={styles.mobileLabel}>Account</p>
-                                <Link href="/login" className={styles.mobileUserBtn} onClick={() => setIsMobileMenuOpen(false)}>
-                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                                        <circle cx="12" cy="7" r="4"></circle>
-                                    </svg>
-                                    <span>Sign In</span>
-                                </Link>
+                                {isLoggedIn ? (
+                                    <div className={styles.mobileUserSection}>
+                                        <div className={styles.mobileUserInfo}>
+                                            <img src={currentUser?.avatar || "/default-avatar.png"} alt={currentUser?.name} className={styles.mobileAvatar} />
+                                            <div>
+                                                <p className={styles.mobileUserName}>{currentUser?.name}</p>
+                                                <p className={styles.mobileUserEmail}>{currentUser?.email}</p>
+                                            </div>
+                                        </div>
+                                        <div className={styles.mobileUserLinks}>
+                                            <Link href="/profile" className={styles.mobileUserLink} onClick={() => setIsMobileMenuOpen(false)}>
+                                                <User size={18} /> Profile
+                                            </Link>
+                                            <button className={styles.mobileUserLink} onClick={() => { setIsMobileMenuOpen(false); handleLogoutClick(); }}>
+                                                <LogOut size={18} /> Logout
+                                            </button>
+                                            <button className={`${styles.mobileUserLink} ${styles.dangerLink}`} onClick={() => { setIsMobileMenuOpen(false); handleDeleteClick(); }}>
+                                                <UserMinus size={18} /> Delete Profile
+                                            </button>
+                                        </div>
+                                    </div>
+                                ) : (
+                                    <Link href="/login" className={styles.mobileUserBtn} onClick={() => setIsMobileMenuOpen(false)}>
+                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                            <circle cx="12" cy="7" r="4"></circle>
+                                        </svg>
+                                        <span>Sign In</span>
+                                    </Link>
+                                )}
+
+                                <div className={styles.mobileActionsList}>
+                                    <button
+                                        className={styles.mobileActionItem}
+                                        onClick={() => {
+                                            setIsMobileMenuOpen(false);
+                                            setIsNotificationDrawerOpen(true);
+                                        }}
+                                    >
+                                        <Bell size={20} />
+                                        <span>Notifications</span>
+                                        {unreadCount > 0 && <span className={styles.mobileBadge}>{unreadCount}</span>}
+                                    </button>
+                                </div>
                             </div>
                         )}
                         <nav className={styles.mobileNav}>
@@ -384,6 +566,32 @@ export default function Navbar({ fullWidth = false, isAdmin = false }: NavbarPro
                     </div>
                 </div>
             </div>
+            <ConfirmationModal
+                isOpen={showLogoutConfirm}
+                onClose={() => setShowLogoutConfirm(false)}
+                onConfirm={confirmLogout}
+                title="Sign Out"
+                message="Are you sure you want to sign out of your account?"
+                confirmText="Sign Out"
+                danger
+            />
+            <ConfirmationModal
+                isOpen={showDeleteConfirm}
+                onClose={() => setShowDeleteConfirm(false)}
+                onConfirm={confirmDelete}
+                title="Delete Profile"
+                message="Are you sure you want to delete your profile? This action cannot be undone."
+                confirmText="Delete Profile"
+                danger
+            />
+            <NotificationDrawer
+                isOpen={isNotificationDrawerOpen}
+                onClose={() => setIsNotificationDrawerOpen(false)}
+                notifications={notifications}
+                onMarkAllRead={handleMarkAllRead}
+                onClearAll={handleClearAll}
+                onNotificationClick={handleNotificationClick}
+            />
         </nav>
     );
 }
