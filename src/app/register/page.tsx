@@ -5,6 +5,9 @@ import Link from 'next/link';
 import styles from './page.module.css';
 import { ArrowLeft } from 'lucide-react';
 import GoogleIcon from '../../components/GoogleIcon';
+import { signInWithPopup } from "firebase/auth";
+import { auth, googleProvider } from "@/lib/firebaseConfig";
+import { useRouter } from "next/navigation";
 
 export default function Register() {
     const [name, setName] = useState('');
@@ -20,6 +23,47 @@ export default function Register() {
     // New states for OTP
     const [step, setStep] = useState<'details' | 'otp'>('details');
     const [otp, setOtp] = useState('');
+    const router = useRouter();
+
+    const handleGoogleLogin = async () => {
+        setLoading(true);
+        try {
+            // 1. Open Google Login Popup
+            const result = await signInWithPopup(auth, googleProvider);
+            const user = result.user;
+
+            // 2. GET THE TOKEN (Critical Step)
+            const idToken = await user.getIdToken();
+
+            // 3. Send Token to Spring Boot Backend
+            const response = await fetch("http://localhost:8080/api/auth/google", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ token: idToken }), // Aligning with login page implementation
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                console.log("Registration/Login Successful on Backend:", data);
+
+                localStorage.setItem("currentUser", JSON.stringify(data.user || user));
+                localStorage.setItem("blog_token", data.token);
+                localStorage.setItem('isLoggedIn', 'true');
+
+                router.push("/");
+            } else {
+                console.error("Backend verification failed");
+                alert("Google Sign-In failed. Please try again.");
+            }
+        } catch (error: any) {
+            console.error("Error during Google Sign-In:", error.message);
+            alert("Error during Google Sign-In: " + error.message);
+        } finally {
+            setLoading(false);
+        }
+    };
 
     const handleRegister = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -93,9 +137,9 @@ export default function Register() {
 
                         {step === 'details' && (
                             <>
-                                <button type="button" className={styles.googleBtn}>
+                                <button type="button" className={styles.googleBtn} onClick={handleGoogleLogin} disabled={loading}>
                                     <GoogleIcon />
-                                    Sign up with Google
+                                    {loading ? "Signing up..." : "Sign up with Google"}
                                 </button>
                                 <div className={styles.divider}>or with email</div>
                             </>

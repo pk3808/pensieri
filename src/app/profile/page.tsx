@@ -26,7 +26,11 @@ import {
     Instagram,
     Facebook,
     Linkedin,
-    Twitter
+    Twitter,
+    Lock,
+    Eye,
+    EyeOff,
+    Shield
 } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -93,6 +97,15 @@ export default function ProfilePage() {
     const [isFollowersModalOpen, setIsFollowersModalOpen] = useState(false);
     const [modalType, setModalType] = useState<'followers' | 'following'>('followers');
 
+    // Password Update State
+    const [passwordForm, setPasswordForm] = useState({
+        currentPassword: '',
+        newPassword: '',
+        confirmPassword: ''
+    });
+    const [showPassword, setShowPassword] = useState(false);
+    const [passwordMessage, setPasswordMessage] = useState({ type: '', text: '' });
+
     useEffect(() => {
         const loggedIn = localStorage.getItem('isLoggedIn') === 'true';
         if (!loggedIn) {
@@ -123,6 +136,34 @@ export default function ProfilePage() {
         setUser(updatedUser);
         localStorage.setItem('currentUser', JSON.stringify(updatedUser));
         setActiveTab('overview');
+    };
+
+    const handlePasswordUpdate = () => {
+        setPasswordMessage({ type: '', text: '' });
+
+        if (!passwordForm.currentPassword || !passwordForm.newPassword || !passwordForm.confirmPassword) {
+            setPasswordMessage({ type: 'error', text: 'All fields are required' });
+            return;
+        }
+
+        if (passwordForm.newPassword !== passwordForm.confirmPassword) {
+            setPasswordMessage({ type: 'error', text: 'New passwords do not match' });
+            return;
+        }
+
+        if (passwordForm.newPassword.length < 8) {
+            setPasswordMessage({ type: 'error', text: 'Password must be at least 8 characters' });
+            return;
+        }
+
+        // Mock API call simulation
+        setPasswordMessage({ type: 'success', text: 'Password updated successfully!' });
+        setPasswordForm({ currentPassword: '', newPassword: '', confirmPassword: '' });
+
+        // Clear success message after 3 seconds
+        setTimeout(() => {
+            setPasswordMessage({ type: '', text: '' });
+        }, 3000);
     };
 
     const handleImageTrigger = () => {
@@ -518,6 +559,94 @@ export default function ProfilePage() {
                                         <div className={styles.buttonGroup}>
                                             <button className={styles.saveBtn} onClick={handleSave}>
                                                 <Save size={18} style={{ marginRight: '0.5rem' }} /> Save Changes
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className={styles.card} style={{ marginTop: '2rem' }}>
+                                <div className={styles.settingsGrid}>
+                                    <div>
+                                        <div className={styles.statHeader} style={{ marginBottom: '0.5rem' }}>
+                                            <Shield size={20} className={styles.statIcon} />
+                                            <h3 className={styles.chartTitle} style={{ margin: 0 }}>Password & Security</h3>
+                                        </div>
+                                        <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem' }}>
+                                            Manage your password and account security settings.
+                                        </p>
+                                    </div>
+
+                                    <div className={styles.editForm}>
+                                        <div className={styles.inputGroup}>
+                                            <label className={styles.label}>Current Password</label>
+                                            <div className={styles.passwordInputWrapper}>
+                                                <input
+                                                    type={showPassword ? "text" : "password"}
+                                                    className={styles.input}
+                                                    placeholder="Enter current password"
+                                                    value={passwordForm.currentPassword}
+                                                    onChange={e => setPasswordForm({ ...passwordForm, currentPassword: e.target.value })}
+                                                />
+                                            </div>
+                                        </div>
+
+                                        <div className={styles.inputGroup}>
+                                            <label className={styles.label}>New Password</label>
+                                            <div className={styles.passwordInputWrapper}>
+                                                <input
+                                                    type={showPassword ? "text" : "password"}
+                                                    className={styles.input}
+                                                    placeholder="Enter new password"
+                                                    value={passwordForm.newPassword}
+                                                    onChange={e => setPasswordForm({ ...passwordForm, newPassword: e.target.value })}
+                                                />
+                                            </div>
+                                        </div>
+
+                                        <div className={styles.inputGroup}>
+                                            <label className={styles.label}>Confirm New Password</label>
+                                            <div className={styles.passwordInputWrapper}>
+                                                <input
+                                                    type={showPassword ? "text" : "password"}
+                                                    className={styles.input}
+                                                    placeholder="Confirm new password"
+                                                    value={passwordForm.confirmPassword}
+                                                    onChange={e => setPasswordForm({ ...passwordForm, confirmPassword: e.target.value })}
+                                                />
+                                            </div>
+                                        </div>
+
+                                        <div className={styles.checkboxGroup} style={{ marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                                            <input
+                                                type="checkbox"
+                                                id="showPassword"
+                                                checked={showPassword}
+                                                onChange={() => setShowPassword(!showPassword)}
+                                                style={{ cursor: 'pointer' }}
+                                            />
+                                            <label htmlFor="showPassword" style={{ cursor: 'pointer', fontSize: '0.9rem', userSelect: 'none' }}>Show Passwords</label>
+                                        </div>
+
+                                        {passwordMessage.text && (
+                                            <div
+                                                style={{
+                                                    padding: '0.75rem',
+                                                    borderRadius: '8px',
+                                                    marginBottom: '1rem',
+                                                    fontSize: '0.9rem',
+                                                    backgroundColor: passwordMessage.type === 'error' ? 'rgba(255, 59, 48, 0.1)' : 'rgba(52, 199, 89, 0.1)',
+                                                    color: passwordMessage.type === 'error' ? '#FF3B30' : '#34C759',
+                                                    border: `1px solid ${passwordMessage.type === 'error' ? 'rgba(255, 59, 48, 0.2)' : 'rgba(52, 199, 89, 0.2)'}`
+                                                }}
+                                            >
+                                                {passwordMessage.text}
+                                            </div>
+                                        )}
+
+                                        <div className={styles.buttonGroup}>
+                                            <button className={styles.saveBtn} onClick={handlePasswordUpdate}>
+                                                Update Password
                                             </button>
                                         </div>
                                     </div>
