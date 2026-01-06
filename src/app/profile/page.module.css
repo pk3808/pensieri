@@ -634,3 +634,107 @@
         height: 140px;
     }
 }
+
+@media (max-width: 768px) {
+    .container {
+        padding: 1rem 1rem 6rem;
+    }
+
+    .dashboardHero {
+        padding: 2rem 1.5rem;
+        margin-bottom: 2rem;
+        border-radius: 30px;
+    }
+
+    .bloggerStatsBar {
+        flex-direction: column;
+        gap: 1.5rem;
+        width: 100%;
+        padding: 1.5rem;
+    }
+
+    .bloggerStatDivider {
+        width: 100%;
+        height: 1px;
+    }
+
+    .heroActions {
+        flex-direction: column;
+        width: 100%;
+        gap: 1rem;
+    }
+
+    .socialRow {
+        width: 100%;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    .shareBtn {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .tabsNav {
+        width: 100%;
+        overflow-x: auto;
+        padding: 0.5rem;
+        margin-bottom: 1.5rem;
+        /* Hide scrollbar for cleaner look */
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+
+    .tabsNav::-webkit-scrollbar {
+        display: none;
+    }
+
+    .tabBtn {
+        white-space: nowrap;
+        padding: 0.6rem 1.2rem;
+        font-size: 0.9rem;
+    }
+
+    .statCard {
+        padding: 1.5rem;
+    }
+
+    .statValue {
+        font-size: 2rem;
+    }
+
+    .settingsGrid {
+        gap: 2rem;
+    }
+
+    .socialInputsGrid {
+        grid-template-columns: 1fr;
+    }
+
+    .metadataRow {
+        flex-direction: column;
+        gap: 0.8rem;
+        align-items: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .name {
+        font-size: 2rem;
+    }
+
+    .avatarWrapper {
+        width: 120px;
+        height: 120px;
+        border-width: 3px;
+    }
+
+    .socialIcon {
+        width: 40px;
+        height: 40px;
+    }
+
+    .statValue {
+        font-size: 1.8rem;
+    }
+}
