@@ -34,23 +34,13 @@ export default async function TopicPage({ params }: { params: Promise<{ slug: st
                     </header>
                 </div>
 
-                <div className={styles.grid} style={{
+                <div className={styles.simpleGrid} style={{
                     marginTop: '4rem',
                     marginBottom: '6rem',
-                    display: 'flex',
-                    flexWrap: 'wrap',
-                    justifyContent: 'center',
-                    gap: '2.5rem'
                 }}>
                     {blogs.length > 0 ? (
                         blogs.map((blog) => (
-                            <div key={blog.slug} style={{
-                                width: '100%',
-                                maxWidth: '380px', // Prevents huge cards on desktop
-                                flex: '1 1 320px'  // Allows wrapping/growing nicely
-                            }}>
-                                <BlogCard blog={blog} />
-                            </div>
+                            <BlogCard key={blog.slug} blog={blog} />
                         ))
                     ) : (
                         <p>No stories found for this topic yet.</p>

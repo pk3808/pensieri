@@ -3,6 +3,7 @@
 import Navbar from "@/components/Navbar";
 import BlogCard from "@/components/BlogCard";
 import Footer from "@/components/Footer";
+import Newsletter from "@/components/Newsletter";
 import styles from "./page.module.css";
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
@@ -194,34 +195,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Newsletter Section */}
-      <section className={styles.newsletterSection}>
-        <div className="container">
-          <div className={styles.newsletterContainer}>
-
-            <div className={styles.newsletterTextSide}>
-              <h2 className={styles.newsletterTitle}>The Weekly Digest</h2>
-              <p className={styles.newsletterText}>
-                Curated stories on design, culture, and tech. Delivered every Sunday.
-              </p>
-            </div>
-
-            <div className={styles.newsletterFormSide}>
-              <form className={styles.newsletterForm} onSubmit={(e) => e.preventDefault()}>
-                <input
-                  type="email"
-                  placeholder="your@email.com"
-                  className={styles.newsletterInput}
-                />
-                <button type="submit" className={styles.subscribeBtn}>
-                  Subscribe
-                </button>
-              </form>
-            </div>
-
-          </div>
-        </div>
-      </section>
+      <Newsletter />
 
       <Footer />
     </main >

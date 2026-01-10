@@ -1,9 +1,11 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styles from './InteractionBar.module.css';
 import { MessageSquare, Share2, Bookmark, Flag } from 'lucide-react';
 import ReportModal from './ReportModal';
+import { useBookmarks } from '@/context/BookmarkContext';
+import { useParams } from 'next/navigation';
 
 export default function InteractionBar() {
     const [inkCount, setInkCount] = useState(124);
@@ -11,11 +13,35 @@ export default function InteractionBar() {
     const [isAnimating, setIsAnimating] = useState(false);
     const [showShareTooltip, setShowShareTooltip] = useState(false);
 
-    // Bookmark state
-    const [isBookmarked, setIsBookmarked] = useState(false);
+    const { isBookmarked: checkBookmarked, toggleBookmark } = useBookmarks();
+    const params = useParams();
+    const slug = params?.slug as string;
+
+    const isBookmarked = checkBookmarked(slug);
 
     // Report state
     const [isReportModalOpen, setIsReportModalOpen] = useState(false);
+    const [isVisible, setIsVisible] = useState(true);
+    const [lastScrollY, setLastScrollY] = useState(0);
+
+    useEffect(() => {
+        const handleScroll = () => {
+            const currentScrollY = window.scrollY;
+
+            // Show if scrolling up, hide if scrolling down
+            // Also show if at the top of the page
+            if (currentScrollY < lastScrollY || currentScrollY < 100) {
+                setIsVisible(true);
+            } else if (currentScrollY > lastScrollY && currentScrollY > 100) {
+                setIsVisible(false);
+            }
+
+            setLastScrollY(currentScrollY);
+        };
+
+        window.addEventListener('scroll', handleScroll, { passive: true });
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, [lastScrollY]);
 
     const handleInk = () => {
         setInkCount(prev => prev + 1);
@@ -40,12 +66,12 @@ export default function InteractionBar() {
     };
 
     const handleBookmark = () => {
-        setIsBookmarked(!isBookmarked);
+        if (slug) toggleBookmark(slug);
     };
 
     return (
         <>
-            <div className={styles.bar}>
+            <div className={`${styles.bar} ${!isVisible ? styles.hidden : ''}`}>
                 {/* Like / Ink Group */}
                 <div className={styles.group}>
                     <button

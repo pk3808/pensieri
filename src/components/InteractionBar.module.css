@@ -13,7 +13,12 @@
     gap: 2rem;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
     z-index: 100;
-    transition: all 0.3s ease;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.bar.hidden {
+    transform: translate(-50%, calc(100% + 4rem));
+    opacity: 0;
 }
 
 [data-theme='dark'] .bar {

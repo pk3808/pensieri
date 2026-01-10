@@ -6,6 +6,8 @@ import BlogCard from "@/components/BlogCard";
 import InteractionBar from "@/components/InteractionBar";
 import CommentSection from "@/components/CommentSection";
 import ReadingAssistant from "./ReadingAssistant";
+import Newsletter from "@/components/Newsletter";
+import Footer from "@/components/Footer";
 
 
 
@@ -115,6 +117,9 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
             </section>
 
             <CommentSection />
+
+            <Newsletter />
+            <Footer />
 
             <ReadingAssistant
                 title={blog.title}

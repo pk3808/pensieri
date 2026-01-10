@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Inter, Merriweather } from "next/font/google"; // Import clean sans and serif fonts
 import "./globals.css";
 import { ThemeProvider } from "@/context/ThemeContext";
+import { BookmarkProvider } from "@/context/BookmarkContext";
 
 // Configure fonts
 const inter = Inter({
@@ -47,7 +48,9 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${inter.variable} ${merriweather.variable}`}>
         <ThemeProvider>
-          {children}
+          <BookmarkProvider>
+            {children}
+          </BookmarkProvider>
         </ThemeProvider>
       </body>
     </html>

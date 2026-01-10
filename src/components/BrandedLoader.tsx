@@ -2,6 +2,10 @@
 
 import React from 'react';
 import styles from './BrandedLoader.module.css';
+import { useBookmarks } from '@/context/BookmarkContext';
+import { MOCK_BLOGS } from '@/data/mockData';
+import Link from 'next/link';
+import { Bookmark } from 'lucide-react';
 
 const WRITING_QUOTES = [
     "“Writing is painting to voice.”",
@@ -20,6 +24,7 @@ interface BrandedLoaderProps {
 }
 
 export default function BrandedLoader({ text = "Loading Experience...", fullScreen = true, showQuotes = false }: BrandedLoaderProps) {
+    const { bookmarks } = useBookmarks();
     const [quote, setQuote] = React.useState(text);
 
     React.useEffect(() => {
@@ -44,6 +49,22 @@ export default function BrandedLoader({ text = "Loading Experience...", fullScre
             <div className={styles.progressBar}>
                 <div className={styles.progressFill}></div>
             </div>
+
+            {bookmarks.length > 0 && showQuotes && (
+                <div className={styles.savedReads}>
+                    <div className={styles.savedHeader}>
+                        <Bookmark size={16} className={styles.savedIcon} />
+                        <span>Your Saved Reads</span>
+                    </div>
+                    <div className={styles.savedList}>
+                        {MOCK_BLOGS.filter(blog => bookmarks.includes(blog.slug)).slice(0, 3).map(blog => (
+                            <Link key={blog.slug} href={`/blog/${blog.slug}`} className={styles.savedItem}>
+                                {blog.title}
+                            </Link>
+                        ))}
+                    </div>
+                </div>
+            )}
         </div>
     );
 }
